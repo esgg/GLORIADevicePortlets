@@ -11,6 +11,14 @@
 	</span>
 	<%} %>
 
+	<span>
+		<label class="aui-field-label" for="<portlet:namespace />gamma_value"><liferay-ui:message key='label-gamma' />: </label>
+		<input id="<portlet:namespace />gamma_value" 
+			name="gamma_value" 
+			value="-"
+			/>
+	</span>
+	
 	<% if (checkboxGain.equalsIgnoreCase("1")) {%>
 	<span>
 		<label class="aui-field-label" for="<portlet:namespace />gain_value"><liferay-ui:message key='label-gain' />: </label>

@@ -24,6 +24,7 @@ function <portlet:namespace />setValues(){
 	var gain;
 	var exposure;
 	var contrast;
+	var gamma;
 	
 	var correct = true;
 	
@@ -61,8 +62,9 @@ function <portlet:namespace />setValues(){
 		exposure = "error";
 	<% } %>
 	
-	
-	if (!expNumN.test(brightness)){
+	gamma = document.getElementById("<portlet:namespace />gamma_value").value;
+		
+	if (!expNumN.test(gamma)){
 		validate=false;
 		alert('<liferay-ui:message key="msg-error-parameter"/>');
 	}
@@ -87,7 +89,7 @@ function <portlet:namespace />setValues(){
 			A.io.request(url, {
 				method : 'POST',
 				data: {
-					'brightness': brightness,
+					'gamma': gamma,
 					'gain': gain,
 					'exposure': exposure
 				},
@@ -150,7 +152,7 @@ function <portlet:namespace />getValues(){
 	
 					if (success) {
 						status.innerHTML = '<liferay-ui:message key="label-ready"/>';
-						document.getElementById("<portlet:namespace />brightness_value").value = data.brightness;
+						document.getElementById("<portlet:namespace />gamma_value").value = data.gamma;
 						document.getElementById("<portlet:namespace />gain_value").value = data.gain;
 						document.getElementById("<portlet:namespace />expT_value").value = data.exposure;
 					} else {
@@ -166,7 +168,7 @@ function <portlet:namespace />getValues(){
 							status.innerHTML = '<liferay-ui:message key="msg-error-reservation_null"/>';
 						}
 						document.getElementById("<portlet:namespace />GLORIAwebcam").src = "<%=request.getContextPath()%>/images/not_available.png";
-						document.getElementById("<portlet:namespace />brightness_value").value = "<liferay-ui:message key='label-error' />";
+						document.getElementById("<portlet:namespace />gamma_value").value = "<liferay-ui:message key='label-error' />";
 						document.getElementById("<portlet:namespace />gain_value").value = "<liferay-ui:message key='label-error' />";
 						document.getElementById("<portlet:namespace />expT_value").value = "<liferay-ui:message key='label-error' />";
 						
