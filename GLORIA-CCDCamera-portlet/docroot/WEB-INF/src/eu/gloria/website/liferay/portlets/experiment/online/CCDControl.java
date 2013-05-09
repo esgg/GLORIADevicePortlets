@@ -70,10 +70,10 @@ public class CCDControl extends MVCPortlet {
 	private static final String TAKE_IMAGE = "takeImage";
 
 	// CCD Parameters
-	private static final String BRIGHTNESS = "ccdBrightness";
 	private static final String GAIN = "ccdGain";
 	private static final String CONTRAST = "ccdContrast";
 	private static final String EXPOSURE = "ccdExposure";
+	private static final String GAMMA = "ccdGamma";
 	private static final String DYNAMIC_URL = "dynamicUrl";
 	private static final String STATIC_URL = "staticUrl";
 	private static final String DYNAMIC_URL_WIDEFIELD = "dynamicUrlWidefield";
@@ -241,9 +241,9 @@ public class CCDControl extends MVCPortlet {
 		log.info("Parameter " + parameter + " detected");
 		parameters.put(STATIC_URL, parameter);
 
-		parameter = "ccd_brightness00";
+		parameter = "ccd_gamma00";
 		log.info("Parameter " + parameter + " detected");
-		parameters.put(BRIGHTNESS, parameter);
+		parameters.put(GAMMA, parameter);
 
 		parameter = "ccd_gain00";
 		log.info("Parameter " + parameter + " detected");
@@ -404,6 +404,10 @@ public class CCDControl extends MVCPortlet {
 		String brightness_value = (String) prefs.getValue("brightness_value",
 				"error");
 		request.setAttribute("brightness_value", brightness_value);
+		
+		String gamma_value = (String) prefs.getValue("gamma_value",
+				"error");
+		request.setAttribute("gamma_value", gamma_value);
 
 		String gain_value = (String) prefs.getValue("gain_value", "error");
 		request.setAttribute("gain_value", gain_value);
@@ -546,13 +550,14 @@ public class CCDControl extends MVCPortlet {
 						"error");
 				String gain = ParamUtil.get(request, "gain", "error");
 				String exposure = ParamUtil.get(request, "exposure", "error");
+				String gamma = ParamUtil.get(request, "gamma", "error");
 			
 				
-				if (!brightness.equals("error") && !gain.equals("error")
+				if (!gamma.equals("error") && !gain.equals("error")
 						&& !exposure.equals("error")) {
 
-					experiment.setParameterValue(parameters.get(BRIGHTNESS),
-							Integer.parseInt(brightness),
+					experiment.setParameterValue(parameters.get(GAMMA),
+							Integer.parseInt(gamma),
 							currentUser.getEmailAddress(),
 							currentUser.getPassword(), reservationId);
 					experiment.setParameterValue(parameters.get(GAIN),
@@ -582,19 +587,21 @@ public class CCDControl extends MVCPortlet {
 			 * GET VALUES
 			 */
 			if (mode.equals("getValues")) {
-				int brightness_value;
+				int gamma_value;
 				int gain_value;
 				int contrast_value;
 				double exposure_value;
 
 				log.info("Getting values");
 
+				//TODO poner esta operación en un try
 				experiment.executeOperation(operations.get(GET_VALUES),
 						currentUser.getEmailAddress(),
 						currentUser.getPassword(), reservationId);
 
-				brightness_value = (Integer) experiment.getParameterValue(
-						parameters.get(BRIGHTNESS),
+				//TODO El resto en otras
+				gamma_value = (Integer) experiment.getParameterValue(
+						parameters.get(GAMMA),
 						currentUser.getEmailAddress(),
 						currentUser.getPassword(), reservationId);
 				gain_value = (Integer) experiment.getParameterValue(
@@ -609,10 +616,10 @@ public class CCDControl extends MVCPortlet {
 						currentUser.getEmailAddress(),
 						currentUser.getPassword(), reservationId);
 
-				log.info("Load Parameters:" + "[B=" + brightness_value + ",G="
+				log.info("Load Parameters:" + "[B=" + gamma_value + ",G="
 						+ gain_value + ",C=" + contrast_value + ",E="
 						+ exposure_value);
-				jsonObject.put("brightness", String.valueOf(brightness_value));
+				jsonObject.put("gamma", String.valueOf(gamma_value));
 				jsonObject.put("gain", String.valueOf(gain_value));
 				jsonObject.put("exposure", String.valueOf(exposure_value));
 				jsonObject.put("contrast", String.valueOf(contrast_value));
